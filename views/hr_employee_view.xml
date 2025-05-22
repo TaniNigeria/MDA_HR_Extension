@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_mda_hr_employee_form_original_layout" model="ir.ui.view">
+        <field name="name">mda.hr.employee.form.original.layout</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="priority">50</field>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/group" position="before">
+                <group string="Primary Information" col="2" class="o_primary_info">
+                    <group>
+                        <field name="file_number" class="o_field_highlight" placeholder="e.g., TA-12345"/>
+                        <field name="surname" class="o_field_highlight" placeholder="e.g., Bahago"/>
+                        <field name="middle_name" class="o_field_highlight" placeholder="e.g., Ciwake"/>
+                        <field name="birthday" class="o_field_highlight" placeholder="Select Date of Birth"/>
+                        <field name="department_id"
+                               placeholder="Select Department"
+                               options="{'no_create': True}"/>
+                        <field name="salary_grade_level" placeholder="e.g., Grade 10"/>
+                        <field name="date_of_first_appointment" placeholder="Select Date"/>
+                        <field name="retirement_date" readonly="1" placeholder="Auto-calculated Retirement Date"/>
+                        <field name="pfa_name" placeholder="e.g., Pension Manager"/>
+
+                        <!-- Default country Nigeria (readonly), state, then cascading LGA -->
+                        <field name="country_id" readonly="1" placeholder="Nigeria"/>
+                        <field name="state_id"
+                               domain="[('country_id.code', '=', 'NG')]"
+                               options="{'no_create': True, 'no_open': True}"
+                               placeholder="Select State"/>
+                        <field name="lga_id"
+                               domain="[('state_id', '=', state_id)]"
+                               options="{'no_create': True, 'no_open': True}"
+                               placeholder="Select LGA"/>
+
+                        <field name="geo_political_zone" placeholder="Enter Geo Political Zone"/>
+                        <field name="work_location_id" placeholder="Work Location"/>
+                        <field name="status" placeholder="Select Status"/>
+                        <field name="age_on_entry" readonly="1" placeholder="Auto-calculated Age"/>
+                        <field name="nature_of_job" placeholder="Enter Nature of Job / Cadre"/>
+                        <field name="salary_structure" placeholder="Enter Salary Structure"/>
+                    </group>
+                    <group>
+                        <field name="ippis" class="o_field_highlight" placeholder="e.g., 208296"/>
+                        <field name="first_name" class="o_field_highlight" placeholder="e.g., Bahaushe"/>
+                        <field name="sex" class="o_field_highlight" placeholder="Select Sex"/>
+                        <field name="job_id" string="Rank" placeholder="Select Rank"/>
+
+                        <field name="type_of_appointment" placeholder="Select Appointment Type"/>
+                        <field name="date_of_present_appointment" placeholder="Select Date"/>
+                        <field name="rsa_pin" placeholder="e.g., PIN100054324"/>
+                        <field name="remark" placeholder="Add Remarks"/>
+                        <field name="email" widget="email" placeholder="e.g., johndoe@example.com"/>
+                        <field name="qualification" placeholder="e.g., BSc, MSc"/>
+                        <field name="description_of_job" placeholder="Enter Job Description Summary"/>
+                    </group>
+                </group>
+            </xpath>
+
+            <!-- Ensure computed name is visible -->
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="invisible">0</attribute>
+            </xpath>
+
+            <!-- Optional: list-view additions -->
+            <xpath expr="//field[@name='job_id']" position="after">
+                <field name="file_number" optional="show"/>
+                <field name="ippis" optional="show"/>
+                <field name="status" optional="show"/>
+            </xpath>
+             <!-- === This xpath caused the error. It now correctly references 'department_id' === -->
+            <xpath expr="//field[@name='department_id']" position="after">
+                <field name="date_of_first_appointment" optional="hide"/>
+                <field name="retirement_date" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
