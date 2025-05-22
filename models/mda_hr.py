@@ -97,3 +97,5 @@ class Employee(models.Model):
             if rec.birthday:
                 dates.append(rec.birthday + relativedelta(years=60))
             rec.retirement_date = min(dates) if dates else False
+
+# Test comment for git cache
